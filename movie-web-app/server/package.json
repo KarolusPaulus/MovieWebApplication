@@ -1,0 +1,30 @@
+{
+  "type": "module",
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "testStart": "cross-env NODE_ENV=test node index.js ",
+    "devStart": "cross-env NODE_ENV=development nodemon index.js",
+    "test": "mocha *.test.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "jsonwebtoken": "^9.0.2",
+    "node": "^18.20.5",
+    "nodemon": "^3.1.7",
+    "pg": "^8.13.1"
+  },
+  "devDependencies": {
+    "chai": "^5.1.2",
+    "cross-env": "^7.0.3",
+    "mocha": "^10.8.2"
+  }
+}

@@ -1,0 +1,553 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+      "title": "MovieApp API documentation",
+      "version": "1.0"
+    },
+    "servers": [
+      {
+        "url": "http://localhost:3001"
+      }
+    ],
+    "paths": {
+      "/register": {
+        "post": {
+          "summary": "Register a new user",
+          "description": "Registers a new user by providing an email and password.",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "example": "user@example.com"
+                    },
+                    "password": {
+                      "type": "string",
+                      "example": "securepassword123"
+                    }
+                  },
+                  "required": ["email", "password"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "User successfully registered.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "user_id": {
+                        "type": "integer"
+                      },
+                      "email": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Validation errors occurred."
+            }
+          }
+        }
+      },
+      "/login": {
+        "post": {
+          "summary": "Log in a user",
+          "description": "Authenticates a user with their email and password, returning a JWT token.",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "example": "user@example.com"
+                    },
+                    "password": {
+                      "type": "string",
+                      "example": "securepassword123"
+                    }
+                  },
+                  "required": ["email", "password"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Login successful.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "user_id": {
+                        "type": "integer"
+                      },
+                      "email": {
+                        "type": "string"
+                      },
+                      "token": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Invalid credentials."
+            }
+          }
+        }
+      },
+      "/logout": {
+        "post": {
+          "summary": "Log out a user",
+          "description": "Logs out the user by invalidating their JWT token.",
+          "responses": {
+            "200": {
+              "description": "User successfully logged out.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "message": {
+                        "type": "string",
+                        "example": "User successfully logged out"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Internal server error."
+            }
+          }
+        }
+      },
+      "/favorites": {
+        "get": {
+          "summary": "Get favorite movies",
+          "description": "Retrieves the list of favorite movies for the authenticated user.",
+          "responses": {
+            "200": {
+              "description": "A list of favorite movies.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "favorites": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "example": "tt1234567"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "User not found."
+            }
+          }
+        },
+        "post": {
+          "summary": "Add a movie to favorites",
+          "description": "Adds a movie to the authenticated user's list of favorites by movie ID.",
+          "parameters": [
+            {
+              "name": "movieId",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "example": "tt1234567"
+              },
+              "description": "The IMDb ID of the movie to add."
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Movie added to favorites.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "message": {
+                        "type": "string",
+                        "example": "Movie added to favorites"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "409": {
+              "description": "Movie already in favorites."
+            },
+            "400": {
+              "description": "Invalid movie ID."
+            }
+          }
+        },
+        "delete": {
+          "summary": "Remove a movie from favorites",
+          "description": "Removes a movie from the authenticated user's list of favorites by movie ID.",
+          "parameters": [
+            {
+              "name": "movieId",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "example": "tt1234567"
+              },
+              "description": "The IMDb ID of the movie to remove."
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Movie removed from favorites.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "message": {
+                        "type": "string",
+                        "example": "Movie removed from favorites"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Movie not found in favorites."
+            }
+          }
+        }
+      },
+      "/reviews/{movieId}": {
+        "get": {
+          "summary": "Get reviews for a movie",
+          "description": "Retrieves all reviews for a specific movie by IMDb ID.",
+          "parameters": [
+            {
+              "name": "movieId",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "example": "tt1234567"
+              },
+              "description": "The IMDb ID of the movie."
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "A list of reviews for the specified movie.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "reviews": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer"
+                            },
+                            "author": {
+                              "type": "string"
+                            },
+                            "content": {
+                              "type": "string"
+                            },
+                            "rating": {
+                              "type": "number",
+                              "format": "float"
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid movie ID."
+            }
+          }
+        }
+      },
+      "/groups": {
+        "get": {
+          "summary": "Get all groups",
+          "description": "Retrieves all groups available in the system.",
+          "responses": {
+            "200": {
+              "description": "A list of groups.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "group_id": {
+                          "type": "integer"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "owner_id": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Internal server error."
+            }
+          }
+        },
+        "post": {
+          "summary": "Create a new group",
+          "description": "Creates a new group with the provided name and description.",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "example": "My Movie Group"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "A group for movie enthusiasts."
+                    },
+                    "owner_id": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": ["name", "description", "owner_id"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Group successfully created.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "group_id": {
+                        "type": "integer"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "owner_id": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Validation error or duplicate group name."
+            }
+          }
+        }
+      },
+      "/groups/{groupId}": {
+        "get": {
+          "summary": "Get group details",
+          "description": "Retrieves details of a specific group by its ID.",
+          "parameters": [
+            {
+              "name": "groupId",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Group details retrieved successfully.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "group_id": {
+                        "type": "integer"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "owner_id": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Group not found."
+            }
+          }
+        },
+        "delete": {
+          "summary": "Delete a group",
+          "description": "Deletes a specific group by its ID. Only the group owner can delete it.",
+          "parameters": [
+            {
+              "name": "groupId",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Group deleted successfully."
+            },
+            "403": {
+              "description": "User is not authorized to delete the group."
+            },
+            "404": {
+              "description": "Group not found."
+            }
+          }
+        }
+      },
+      "/groups/{groupId}/members": {
+        "get": {
+          "summary": "Get group members",
+          "description": "Retrieves a list of members for a specific group.",
+          "parameters": [
+            {
+              "name": "groupId",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Group members retrieved successfully.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "user_id": {
+                          "type": "integer"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "role": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Group not found."
+            }
+          }
+        },
+        "post": {
+          "summary": "Add members to group",
+          "description": "Adds new members to a specific group.",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "userIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "integer"
+                      }
+                    }
+                  },
+                  "required": ["userIds"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Members added successfully."
+            },
+            "400": {
+              "description": "Validation error."
+            }
+          }
+        }
+      }
+    }
+  }
+  
