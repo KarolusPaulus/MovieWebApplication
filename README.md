@@ -17,7 +17,7 @@ The project was built using React and JavaScript for the frontend, with JavaScri
 
 # Demo Video of The Desktop Version
 ### In English
-[![Demo](https://i9.ytimg.com/vi/-bYTO3csi_Y/mqdefault.jpg?sqp=CIyRu7wG-oaymwEmCMACELQB8quKqQMa8AEB-AH-CYAChgWKAgwIABABGF4gXiheMA8=&rs=AOn4CLDxlNFnftURODRLJvVhezrmgzi1Iw)](https://www.youtube.com/watch?v=-bYTO3csi_Y)
+[![Demo](https://i9.ytimg.com/vi_webp/-bYTO3csi_Y/mq2.webp?sqp=COiTvrwG-oaymwEmCMACELQB8quKqQMa8AEB-AH-CYAChgWKAgwIABABGF4gXiheMA8=&rs=AOn4CLBcBFc6SJdIHCwSyQxr_2v6hd1OiQ)](https://www.youtube.com/watch?v=-bYTO3csi_Y)
 
 # Mobile Version Samples
 ### Taken on desktop
